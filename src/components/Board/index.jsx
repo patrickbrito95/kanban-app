@@ -17,6 +17,10 @@ const Board = () => {
     const [newTaskLocation, setNewTaskLocation] = useState('');
     const [newDescription, setNewDescription] = useState('');
     const [newTaskPriority, setNewTaskPriority] = useState('low');
+    const [errorMessages, setErrorMessages] = useState({
+        newTaskName: '',
+        newDescription: '',
+    });
 
 
     const handleCreateTask = () => {
@@ -51,7 +55,20 @@ const Board = () => {
             tasks: newTasks,
         };
 
+        if (!newTaskName.trim() || !newDescription.trim()) {
+            setErrorMessages({
+                newTaskName: newTaskName.trim() ? '' : 'Campo obrigatório',
+                newDescription: newDescription.trim() ? '' : 'Campo obrigatório',
+            });
+            return;
+        }
+
         setData(newData);
+
+        setErrorMessages({
+            newTaskName: '',
+            newDescription: '',
+        });
 
         setNewTaskName('');
         setNewTaskDueDate('');
@@ -59,6 +76,9 @@ const Board = () => {
         setNewDescription('');
         setNewTaskPriority('low');
         setShowCreateTaskModal(false);
+
+
+
     };
 
     const handleDragEnd = (result) => {
@@ -145,6 +165,19 @@ const Board = () => {
         setData(updatedData);
     };
 
+    const cancelCreateTask = () => {
+        setNewTaskName('');
+        setNewTaskDueDate(moment().format('YYYY-MM-DD'));
+        setNewTaskLocation('');
+        setNewDescription('');
+        setNewTaskPriority('low');
+        setErrorMessages({
+            newTaskName: '',
+            newDescription: '',
+        });
+        setShowCreateTaskModal(false);
+    };
+
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
@@ -204,6 +237,7 @@ const Board = () => {
                             value={newTaskName}
                             onChange={(e) => setNewTaskName(e.target.value)}
                         />
+                        {errorMessages.newTaskName && <p className="error-message">{errorMessages.newTaskName}</p>}
                         <input
                             className='input-text'
                             type="date"
@@ -226,19 +260,19 @@ const Board = () => {
                             value={newDescription}
                             onChange={(e) => setNewDescription(e.target.value)}
                         />
+                        {errorMessages.newDescription && <p className="error-message">{errorMessages.newDescription}</p>}
                         <select
                             className='priority-select-modal'
                             value={newTaskPriority}
                             onChange={(e) => setNewTaskPriority(e.target.value)}
                         >
-                            <option value="critical">Crítico</option>
-                            <option value="high">Alta</option>
-                            <option value="low">Baixa</option>
+                            <option value="critical">Prioridade Crítica</option>
+                            <option value="high">Prioridade Alta</option>
+                            <option value="low">Prioridade Baixa</option>
                         </select>
                         <div className='wrapper-buttons-modal'>
                             <button className='create-task-button' onClick={handleCreateTask}>Criar Tarefa</button>
-                            <button className='cancel-task-button-modal' onClick={() => setShowCreateTaskModal(false)}>Cancelar</button>
-                        </div>
+                            <button className='cancel-task-button-modal' onClick={cancelCreateTask}>Cancelar</button>                        </div>
                     </div>
                 </Modal>
             )}

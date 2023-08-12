@@ -22,6 +22,10 @@
     position: relative;
 }
 
+.modal-content::-webkit-scrollbar {
+    display: none;
+}
+
 .modal-close-button {
     position: absolute;
     top: 10px;
