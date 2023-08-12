@@ -35,22 +35,75 @@ const Board = () => {
         tasks: {
             task1: {
                 id: 'task1',
-                content: 'Task 1',
+                name: 'Task 1',
+                dueDate: '2023-06-01',
+                location: 'Office A',
+                priority: 'high',
             },
             task2: {
                 id: 'task2',
-                content: 'Task 2',
+                name: 'Task 2',
+                dueDate: '2023-06-05',
+                location: 'Office B',
+                priority: 'critical',
             },
             task3: {
                 id: 'task3',
-                content: 'Task 3',
+                name: 'Task 3',
+                dueDate: '2023-06-10',
+                location: 'Office C',
+                priority: 'low',
             },
         },
         columnOrder: ['backlog', 'todo', 'inProgress', 'testing', 'done'],
     };
 
     const [data, setData] = useState(initialData);
+    const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
+    const [newTaskName, setNewTaskName] = useState('');
+    const [newTaskDueDate, setNewTaskDueDate] = useState('');
+    const [newTaskLocation, setNewTaskLocation] = useState('');
+    const [newTaskPriority, setNewTaskPriority] = useState('low');
 
+    const handleCreateTask = () => {
+        const newTaskId = `task${Object.keys(data.tasks).length + 1}`;
+
+        const newTask = {
+            id: newTaskId,
+            name: newTaskName,
+            dueDate: newTaskDueDate,
+            location: newTaskLocation,
+            priority: newTaskPriority,
+        };
+
+        const newColumnOrder = [...data.columns.backlog.taskIds, newTaskId];
+        const newColumns = {
+            ...data.columns,
+            backlog: {
+                ...data.columns.backlog,
+                taskIds: newColumnOrder,
+            },
+        };
+
+        const newTasks = {
+            ...data.tasks,
+            [newTaskId]: newTask,
+        };
+
+        const newData = {
+            ...data,
+            columns: newColumns,
+            tasks: newTasks,
+        };
+
+        setData(newData);
+
+        setNewTaskName('');
+        setNewTaskDueDate('');
+        setNewTaskLocation('');
+        setNewTaskPriority('low');
+        setShowCreateTaskModal(false);
+    };
 
     const handleDragEnd = (result) => {
 
@@ -118,6 +171,9 @@ const Board = () => {
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <div className="board">
+                <div className="create-task-button" onClick={() => setShowCreateTaskModal(true)}>
+                    Create Task
+                </div>
                 {data.columnOrder.map((columnId) => {
                     const column = data.columns[columnId];
                     const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
@@ -127,6 +183,23 @@ const Board = () => {
                     );
                 })}
             </div>
+            {showCreateTaskModal && (
+                <div className="create-task-modal">
+                    <div className="modal-content">
+                        <h2>Create New Task</h2>
+                        <input
+                            type="text"
+                            placeholder="Task Name"
+                            value={newTaskName}
+                            onChange={(e) => setNewTaskName(e.target.value)}
+                        />
+                        {/* Other input fields for due date, location, and priority */}
+                        {/* ... */}
+                        <button onClick={handleCreateTask}>Create Task</button>
+                        <button onClick={() => setShowCreateTaskModal(false)}>Cancel</button>
+                    </div>
+                </div>
+            )}
         </DragDropContext>
     );
 };

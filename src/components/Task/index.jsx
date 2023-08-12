@@ -3,6 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import './style.css';
 
 const TaskItem = ({ task, index }) => {
+    console.log(task)
     return (
         <Draggable draggableId={task.id} index={index}>
             {(provided) => (
@@ -12,7 +13,9 @@ const TaskItem = ({ task, index }) => {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                 >
-                    {task.content}
+                    <div>{task.name}</div>
+                    <div>Data final: {task.dueDate}</div>
+                    <div>Prioridade: {task.priority === "low" ? "Baixa" : task.priority === "medium" ? "Média" : "Alta"}</div>
                 </div>
             )}
         </Draggable>
