@@ -28,7 +28,8 @@ const TaskItem = ({ task, index, onDelete }) => {
                         onClick={handleOpenModal}
                     >
                         <div className={`${task.priority === "low" ? "card-low-priority" : task.priority === "high" ? "card-high-priority" : "card-critical-priority"}`}>{task.name}</div>
-                        <div className='description'>{task.description}</div>
+                        <div className='detail-item'>{task.location}</div>
+                        <div className='detail-item'>{task.priority === "low" ? "Prioridade Baixa" : task.priority === "high" ? "Prioridade Alta" : "Prioridade Crítica"}</div>
                         <div className='deadline-date'>Finalizar até&nbsp;{moment(task.dueDate).format('DD/MM/YYYY')}</div>
                         <button className="delete-button" onClick={() => onDelete(task.id)}>
                             <Icon name='x-mark' />
