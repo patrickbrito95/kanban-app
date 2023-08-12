@@ -2,68 +2,22 @@ import React, { useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from '../Column';
 import './style.css';
+import Icon from '../Icons';
+import Modal from '../Modal';
+import apiData from '../../api/tasks.json';
+import moment from 'moment';
 
 const Board = () => {
-    const initialData = {
-        columns: {
-            backlog: {
-                id: 'backlog',
-                title: 'Backlog',
-                taskIds: ['task1', 'task2', 'task3'],
-            },
-            todo: {
-                id: 'todo',
-                title: 'To Do',
-                taskIds: [],
-            },
-            inProgress: {
-                id: 'inProgress',
-                title: 'In Progress',
-                taskIds: [],
-            },
-            testing: {
-                id: 'testing',
-                title: 'Testing',
-                taskIds: [],
-            },
-            done: {
-                id: 'done',
-                title: 'Done',
-                taskIds: [],
-            },
-        },
-        tasks: {
-            task1: {
-                id: 'task1',
-                name: 'Task 1',
-                dueDate: '2023-06-01',
-                location: 'Office A',
-                priority: 'high',
-            },
-            task2: {
-                id: 'task2',
-                name: 'Task 2',
-                dueDate: '2023-06-05',
-                location: 'Office B',
-                priority: 'critical',
-            },
-            task3: {
-                id: 'task3',
-                name: 'Task 3',
-                dueDate: '2023-06-10',
-                location: 'Office C',
-                priority: 'low',
-            },
-        },
-        columnOrder: ['backlog', 'todo', 'inProgress', 'testing', 'done'],
-    };
-
-    const [data, setData] = useState(initialData);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedPriority, setSelectedPriority] = useState('all');
+    const [data, setData] = useState(apiData);
     const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
     const [newTaskName, setNewTaskName] = useState('');
-    const [newTaskDueDate, setNewTaskDueDate] = useState('');
+    const [newTaskDueDate, setNewTaskDueDate] = useState(moment().format('YYYY-MM-DD'));
     const [newTaskLocation, setNewTaskLocation] = useState('');
+    const [newDescription, setNewDescription] = useState('');
     const [newTaskPriority, setNewTaskPriority] = useState('low');
+
 
     const handleCreateTask = () => {
         const newTaskId = `task${Object.keys(data.tasks).length + 1}`;
@@ -72,6 +26,7 @@ const Board = () => {
             id: newTaskId,
             name: newTaskName,
             dueDate: newTaskDueDate,
+            description: newDescription,
             location: newTaskLocation,
             priority: newTaskPriority,
         };
@@ -101,6 +56,7 @@ const Board = () => {
         setNewTaskName('');
         setNewTaskDueDate('');
         setNewTaskLocation('');
+        setNewDescription('');
         setNewTaskPriority('low');
         setShowCreateTaskModal(false);
     };
@@ -168,37 +124,123 @@ const Board = () => {
         }
     };
 
+    const handleDelete = (taskId) => {
+        const updatedTasks = { ...data.tasks };
+        delete updatedTasks[taskId];
+
+        const updatedColumns = { ...data.columns };
+        Object.keys(updatedColumns).forEach((columnId) => {
+            const taskIndex = updatedColumns[columnId].taskIds.indexOf(taskId);
+            if (taskIndex !== -1) {
+                updatedColumns[columnId].taskIds.splice(taskIndex, 1);
+            }
+        });
+
+        const updatedData = {
+            ...data,
+            tasks: updatedTasks,
+            columns: updatedColumns,
+        };
+
+        setData(updatedData);
+    };
+
+
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <div className="board">
-                <div className="create-task-button" onClick={() => setShowCreateTaskModal(true)}>
-                    Create Task
+                <div className='wrapper-filters'>
+                    <div className="create-task-button" onClick={() => setShowCreateTaskModal(true)}>
+                        Nova Tarefa
+                        <Icon name="plus-mark" />
+                    </div>
+                    <div className='wrapper-search-filds'>
+                        <label>Prioridade </label>
+                        <select
+                            className='priority-select'
+                            value={selectedPriority}
+                            onChange={(e) => setSelectedPriority(e.target.value)}
+                        >
+                            <option value="all">Todos</option>
+                            <option value="critical">Crítico</option>
+                            <option value="high">Alta</option>
+                            <option value="low">Baixa</option>
+                        </select>
+                    </div>
+                    <div className='wrapper-search-filds'>
+                        <label>Nome da Task </label>
+                        <input
+                            className='input-text'
+                            type="text"
+                            placeholder="Digite o nome da Task..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
                 </div>
-                {data.columnOrder.map((columnId) => {
-                    const column = data.columns[columnId];
-                    const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
+                <div className='board-cards'>
 
-                    return (
-                        <Column key={column.id} column={column} tasks={tasks} />
-                    );
-                })}
+                    {data.columnOrder.map((columnId) => {
+                        const column = data.columns[columnId];
+                        const tasks = column.taskIds
+                            .map((taskId) => data.tasks[taskId])
+                            .filter((task) =>
+                                task.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                                (selectedPriority === 'all' || task.priority === selectedPriority)
+                            );
+
+                        return <Column key={column.id} column={column} tasks={tasks} onDelete={handleDelete} />;
+                    })}
+                </div>
             </div>
             {showCreateTaskModal && (
-                <div className="create-task-modal">
-                    <div className="modal-content">
-                        <h2>Create New Task</h2>
+                <Modal isOpen={true} onClose={() => setShowCreateTaskModal(false)}>
+                    <div className='wrapper-modal-content'>
+                        <h2>Criar Nova Tarefa</h2>
                         <input
+                            className='input-text'
                             type="text"
-                            placeholder="Task Name"
+                            placeholder="Nome da Tarefa"
                             value={newTaskName}
                             onChange={(e) => setNewTaskName(e.target.value)}
                         />
-                        {/* Other input fields for due date, location, and priority */}
-                        {/* ... */}
-                        <button onClick={handleCreateTask}>Create Task</button>
-                        <button onClick={() => setShowCreateTaskModal(false)}>Cancel</button>
+                        <input
+                            className='input-text'
+                            type="date"
+                            placeholder="Data Limite"
+                            defaultValue={moment().format('YYYY-MM-DD')}
+                            value={newTaskDueDate}
+                            onChange={(e) => setNewTaskDueDate(e.target.value)}
+                        />
+                        <input
+                            className='input-text'
+                            type="text"
+                            placeholder="Local"
+                            value={newTaskLocation}
+                            onChange={(e) => setNewTaskLocation(e.target.value)}
+                        />
+                        <textarea
+                            className='input-text'
+                            type="text"
+                            placeholder="Descrição"
+                            value={newDescription}
+                            onChange={(e) => setNewDescription(e.target.value)}
+                        />
+                        <select
+                            className='priority-select-modal'
+                            value={newTaskPriority}
+                            onChange={(e) => setNewTaskPriority(e.target.value)}
+                        >
+                            <option value="critical">Crítico</option>
+                            <option value="high">Alta</option>
+                            <option value="low">Baixa</option>
+                        </select>
+                        <div className='wrapper-buttons-modal'>
+                            <button className='create-task-button' onClick={handleCreateTask}>Criar Tarefa</button>
+                            <button className='cancel-task-button-modal' onClick={() => setShowCreateTaskModal(false)}>Cancelar</button>
+                        </div>
                     </div>
-                </div>
+                </Modal>
             )}
         </DragDropContext>
     );

@@ -1,7 +1,129 @@
+.task-item {
+}
+
 .board {
-    border: 1px solid red;
     display: flex;
     justify-content: space-between;
-    min-height: 400px;
-    max-height: 800px;
+    flex-direction: column;
+    padding-bottom: 10px;
+}
+
+.board-cards {
+    display: flex;
+}
+
+.wrapper-filters {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.wrapper-search-filds {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+
+label {
+    text-align: left;
+    font-size: 15px;
+    font-weight: 500;
+    color: #76797c;
+    margin-left: 10px;
+}
+
+.priority-select {
+    height: 35px;
+    width: 200px;
+    border: none;
+    background-color: #D6DCE3;
+    margin: 10px;
+    padding: 5px 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+}
+
+.priority-select-modal {
+    height: 35px;
+    width: 320px;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 10px;
+    background-color: #D6DCE3;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+}
+
+.input-text {
+    height: 30px;
+    width: 300px;
+    max-width: 300px;
+    border: none;
+    background-color: #D6DCE3;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 15px;
+}
+
+
+
+.input-text:focus {
+    outline: none;
+
+}
+
+.create-task-button {
+    border-radius: 2px;
+    border: 2px solid  #D6DCE3;
+    background: #FFF;
+    height: 40px;
+    padding: 4px 16px;
+    width: 150px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    font-weight: 600;
+    color: #76797c;
+    
+}
+
+.create-task-button:hover {
+    background-color: #D6DCE3;
+}
+
+.wrapper-modal-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.wrapper-buttons-modal {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 10px;
+} 
+
+.cancel-task-button-modal {
+    border-radius: 2px;
+    border: 2px solid  #D6DCE3;
+    background-color: #FFF;
+    height: 40px;
+    padding: 4px 16px;
+    width: 150px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: #76797c;    
+}
+
+.cancel-task-button-modal:hover {
+    color: #000000;
 }

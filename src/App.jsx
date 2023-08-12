@@ -5,7 +5,7 @@ import Board from './components/Board';
 const App = () => {
   return (
     <div className="app">
-      <h1>Kanban Board</h1>
+      <h1 className='title-board'>Tarefas</h1>
       <Board />
     </div>
   );

@@ -1,0 +1,60 @@
+{
+    "columns": {
+      "backlog": {
+        "id": "backlog",
+        "title": "Backlog",
+        "taskIds": ["task1", "task2", "task3"]
+      },
+      "todo": {
+        "id": "todo",
+        "title": "A Fazer",
+        "taskIds": []
+      },
+      "inProgress": {
+        "id": "inProgress",
+        "title": "Em Andamento",
+        "taskIds": []
+      },
+      "testing": {
+        "id": "testing",
+        "title": "Testes",
+        "taskIds": []
+      },
+      "done": {
+        "id": "done",
+        "title": "Finalizado",
+        "taskIds": []
+      }
+    },
+    "tasks": {
+      "task1": {
+        "id": "task1",
+        "name": "Task 1",
+        "dueDate": "2023-06-01",
+        "description": "Descrição da Task 1",
+        "location": "Office A",
+        "priority": "high",
+        "hasAttachment": true
+      },
+      "task2": {
+        "id": "task2",
+        "name": "Task 2",
+        "dueDate": "2023-06-05",
+        "description": "Descrição da Task 2",
+        "location": "Office B",
+        "priority": "critical",
+        "hasAttachment": false
+      },
+      "task3": {
+        "id": "task3",
+        "name": "Task 3",
+        "dueDate": "2023-06-10",
+        "description": "Descrição da Task 3",
+        "location": "Office C",
+        "priority": "low",
+        "hasAttachment": true
+      }
+    },
+    "columnOrder": ["backlog", "todo", "inProgress", "testing", "done"]
+  }
+  
