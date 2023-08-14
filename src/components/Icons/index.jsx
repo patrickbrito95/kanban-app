@@ -7,8 +7,8 @@ const Icon = (props) => {
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="icon icon-tabler icon-tabler-search"
-                    width="20"
-                    height="20"
+                    width="15"
+                    height="15"
                     viewBox="0 0 24 24"
                     strokeWidth="2"
                     stroke="#ffffff"

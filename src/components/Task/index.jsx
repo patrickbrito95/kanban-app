@@ -16,6 +16,12 @@ const TaskItem = ({ task, index, onDelete }) => {
         setIsModalOpen(false);
     };
 
+    const currentDate = moment();
+    const dueDate = moment(task.dueDate, 'DD-MM-YYYY');
+    const notLateDeadline = dueDate.isBefore(currentDate, 'day');
+
+    console.log(notLateDeadline)
+
     return (
         <Draggable draggableId={task.id} index={index}>
             {(provided) => (
@@ -30,9 +36,11 @@ const TaskItem = ({ task, index, onDelete }) => {
                         <div className={`${task.priority === "low" ? "card-low-priority" : task.priority === "high" ? "card-high-priority" : "card-critical-priority"}`}>{task.name}</div>
                         <div className='detail-item'>{task.location}</div>
                         <div className='detail-item'>{task.priority === "low" ? "Prioridade Baixa" : task.priority === "high" ? "Prioridade Alta" : "Prioridade Crítica"}</div>
-                        <div className='deadline-date'>Finalizar até&nbsp;{moment(task.dueDate).format('DD/MM/YYYY')}</div>
+                        <div className={notLateDeadline ? 'deadline-date-late' : 'deadline-date'}>{`Finalizar até ${moment(task.dueDate).format('DD/MM/YYYY')}`}</div>
                         <button className="delete-button" onClick={() => onDelete(task.id)}>
-                            <Icon name='x-mark' />
+                            <div className='delete-icon'>
+                                <Icon name='x-mark' />
+                            </div>
                         </button>
                     </div>
                     {isModalOpen && (
@@ -46,28 +54,30 @@ const TaskItem = ({ task, index, onDelete }) => {
                                 <div className='wrapper-detail'>
                                     {task.description}
                                 </div>
-                                <div className='wrapper-details-data'>
-                                    <span>
-                                        Finalizar até&nbsp;
-                                    </span>
-                                    <div>
+                                <div className='wrapper-bottom-details'>
+                                    <div className={'wrapper-detail'}>
+                                        <span>
+                                            Finalizar até&nbsp;
+                                        </span>
+                                        <div>
+                                            {moment(task.dueDate).format('DD/MM/YYYY')}
+                                        </div>
+                                    </div>
+                                    <div className='wrapper-detail'>
+                                        <span>Local:</span>
+                                        <div>
 
-                                        {task.dueDate}
+                                            {task.location}
+                                        </div>
+                                    </div>
+                                    <div className='wrapper-detail'>
+                                        <span>Prioridade: </span>
+                                        <div>
+                                            {task.priority === "low" ? "Baixa" : task.priority === "high" ? "Alta" : "Crítico"}
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='wrapper-detail'>
-                                    <span>Local:</span>
-                                    <div>
-
-                                        {task.location}
-                                    </div>
-                                </div>
-                                <div className='wrapper-detail'>
-                                    <span>Prioridade: </span>
-                                    <div>
-                                        {task.priority === "low" ? "Baixa" : task.priority === "high" ? "Alta" : "Crítico"}
-                                    </div>
-                                </div>
+                                {notLateDeadline && (<div className='late-task'>Tarefa Atrasada</div>)}
                                 {task.hasAttachment && (
                                     <div onClick={() => { }} className='wrapper-has-attachment'>
                                         Visualizar Anexo Disponível

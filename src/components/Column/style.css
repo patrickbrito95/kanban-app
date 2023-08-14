@@ -26,6 +26,7 @@
 
 .task-list {
     padding: 60px 5px 10px 5px;
+    width: 235px;
     max-width: 400px;
     height: 400px;
     max-height: 400px;

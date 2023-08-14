@@ -39,7 +39,7 @@
       "task2": {
         "id": "task2",
         "name": "Task 2",
-        "dueDate": "2023-06-05",
+        "dueDate": "2023-08-25",
         "description": "Descrição da Task 2",
         "location": "Office B",
         "priority": "critical",
@@ -52,7 +52,7 @@
         "description": "Descrição da Task 3",
         "location": "Office C",
         "priority": "low",
-        "hasAttachment": true
+        "hasAttachment": false
       }
     },
     "columnOrder": ["backlog", "todo", "inProgress", "testing", "done"]

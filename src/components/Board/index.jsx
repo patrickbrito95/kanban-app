@@ -6,6 +6,7 @@ import Icon from '../Icons';
 import Modal from '../Modal';
 import apiData from '../../api/tasks.json';
 import moment from 'moment';
+import { TfiPinAlt } from "react-icons/tfi";
 
 const Board = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,6 +21,7 @@ const Board = () => {
     const [errorMessages, setErrorMessages] = useState({
         newTaskName: '',
         newDescription: '',
+        newTaskDueDate: '',
     });
 
 
@@ -55,10 +57,18 @@ const Board = () => {
             tasks: newTasks,
         };
 
-        if (!newTaskName.trim() || !newDescription.trim()) {
+        const currentDate = moment();
+
+        const dueDate = moment(newTaskDueDate._i, 'DD-MM-YYYY');
+
+        console.log(currentDate)
+        console.log(moment(dueDate._i).format('DD-MM-YYYY'))
+
+        if (!newTaskName.trim() || !newDescription.trim() || dueDate.isBefore(currentDate, 'day')) {
             setErrorMessages({
                 newTaskName: newTaskName.trim() ? '' : 'Campo obrigatório',
                 newDescription: newDescription.trim() ? '' : 'Campo obrigatório',
+                newTaskDueDate: 'Não é possível inserir data anterior a atual.'
             });
             return;
         }
@@ -68,6 +78,7 @@ const Board = () => {
         setErrorMessages({
             newTaskName: '',
             newDescription: '',
+            newTaskDueDate: ''
         });
 
         setNewTaskName('');
@@ -76,8 +87,6 @@ const Board = () => {
         setNewDescription('');
         setNewTaskPriority('low');
         setShowCreateTaskModal(false);
-
-
 
     };
 
@@ -174,6 +183,7 @@ const Board = () => {
         setErrorMessages({
             newTaskName: '',
             newDescription: '',
+            newTaskDueDate: ''
         });
         setShowCreateTaskModal(false);
     };
@@ -227,7 +237,7 @@ const Board = () => {
                 </div>
             </div>
             {showCreateTaskModal && (
-                <Modal isOpen={true} onClose={() => setShowCreateTaskModal(false)}>
+                <Modal isOpen={true} onClose={cancelCreateTask}>
                     <div className='wrapper-modal-content'>
                         <h2>Criar Nova Tarefa</h2>
                         <input
@@ -238,6 +248,7 @@ const Board = () => {
                             onChange={(e) => setNewTaskName(e.target.value)}
                         />
                         {errorMessages.newTaskName && <p className="error-message">{errorMessages.newTaskName}</p>}
+                        <label>Data prevista</label>
                         <input
                             className='input-text'
                             type="date"
@@ -246,21 +257,24 @@ const Board = () => {
                             value={newTaskDueDate}
                             onChange={(e) => setNewTaskDueDate(e.target.value)}
                         />
+                        {errorMessages.newTaskDueDate && <p className="error-message">{errorMessages.newTaskDueDate}</p>}
+
                         <input
                             className='input-text'
                             type="text"
-                            placeholder="Local"
+                            placeholder="Local da Tarefa"
                             value={newTaskLocation}
                             onChange={(e) => setNewTaskLocation(e.target.value)}
                         />
                         <textarea
                             className='input-text'
                             type="text"
-                            placeholder="Descrição"
+                            placeholder="Descrição da Tarefa"
                             value={newDescription}
                             onChange={(e) => setNewDescription(e.target.value)}
                         />
                         {errorMessages.newDescription && <p className="error-message">{errorMessages.newDescription}</p>}
+                        <label>Prioridade da Tarefa:</label>
                         <select
                             className='priority-select-modal'
                             value={newTaskPriority}
