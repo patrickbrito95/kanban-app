@@ -6,7 +6,6 @@ import Icon from '../Icons';
 import Modal from '../Modal';
 import apiData from '../../api/tasks.json';
 import moment from 'moment';
-import { TfiPinAlt } from "react-icons/tfi";
 import { Input } from '../Input';
 
 const Board = () => {
