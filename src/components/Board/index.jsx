@@ -7,6 +7,7 @@ import Modal from '../Modal';
 import apiData from '../../api/tasks.json';
 import moment from 'moment';
 import { TfiPinAlt } from "react-icons/tfi";
+import { Input } from '../Input';
 
 const Board = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -60,9 +61,6 @@ const Board = () => {
         const currentDate = moment();
 
         const dueDate = moment(newTaskDueDate._i, 'DD-MM-YYYY');
-
-        console.log(currentDate)
-        console.log(moment(dueDate._i).format('DD-MM-YYYY'))
 
         if (!newTaskName.trim() || !newDescription.trim() || dueDate.isBefore(currentDate, 'day')) {
             setErrorMessages({
@@ -198,9 +196,10 @@ const Board = () => {
                         <Icon name="plus-mark" />
                     </div>
                     <div className='wrapper-search-filds'>
-                        <label>Prioridade </label>
-                        <select
-                            className='priority-select'
+                        <Input
+                            inputSelect
+                            label="Prioridade"
+                            className="priority-select"
                             value={selectedPriority}
                             onChange={(e) => setSelectedPriority(e.target.value)}
                         >
@@ -208,12 +207,12 @@ const Board = () => {
                             <option value="critical">Crítico</option>
                             <option value="high">Alta</option>
                             <option value="low">Baixa</option>
-                        </select>
+                        </Input>
                     </div>
                     <div className='wrapper-search-filds'>
-                        <label>Nome da Task </label>
-                        <input
-                            className='input-text'
+                        <Input
+                            label="Nome da Task"
+                            className="input-text"
                             type="text"
                             placeholder="Digite o nome da Task..."
                             value={searchTerm}
@@ -222,7 +221,6 @@ const Board = () => {
                     </div>
                 </div>
                 <div className='board-cards'>
-
                     {data.columnOrder.map((columnId) => {
                         const column = data.columns[columnId];
                         const tasks = column.taskIds
@@ -240,7 +238,7 @@ const Board = () => {
                 <Modal isOpen={true} onClose={cancelCreateTask}>
                     <div className='wrapper-modal-content'>
                         <h2>Criar Nova Tarefa</h2>
-                        <input
+                        <Input
                             className='input-text'
                             type="text"
                             placeholder="Nome da Tarefa"
@@ -248,8 +246,8 @@ const Board = () => {
                             onChange={(e) => setNewTaskName(e.target.value)}
                         />
                         {errorMessages.newTaskName && <p className="error-message">{errorMessages.newTaskName}</p>}
-                        <label>Data prevista</label>
-                        <input
+                        <Input
+                            label="Data prevista"
                             className='input-text'
                             type="date"
                             placeholder="Data Limite"
@@ -259,7 +257,7 @@ const Board = () => {
                         />
                         {errorMessages.newTaskDueDate && <p className="error-message">{errorMessages.newTaskDueDate}</p>}
 
-                        <input
+                        <Input
                             className='input-text'
                             type="text"
                             placeholder="Local da Tarefa"
@@ -274,8 +272,9 @@ const Board = () => {
                             onChange={(e) => setNewDescription(e.target.value)}
                         />
                         {errorMessages.newDescription && <p className="error-message">{errorMessages.newDescription}</p>}
-                        <label>Prioridade da Tarefa:</label>
-                        <select
+                        <Input
+                            inputSelect
+                            label="Prioridade da Tarefa: "
                             className='priority-select-modal'
                             value={newTaskPriority}
                             onChange={(e) => setNewTaskPriority(e.target.value)}
@@ -283,7 +282,7 @@ const Board = () => {
                             <option value="critical">Prioridade Crítica</option>
                             <option value="high">Prioridade Alta</option>
                             <option value="low">Prioridade Baixa</option>
-                        </select>
+                        </Input>
                         <div className='wrapper-buttons-modal'>
                             <button className='create-task-button' onClick={handleCreateTask}>Criar Tarefa</button>
                             <button className='cancel-task-button-modal' onClick={cancelCreateTask}>Cancelar</button>                        </div>

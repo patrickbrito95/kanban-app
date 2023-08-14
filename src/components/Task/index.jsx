@@ -20,8 +20,6 @@ const TaskItem = ({ task, index, onDelete }) => {
     const dueDate = moment(task.dueDate, 'DD-MM-YYYY');
     const notLateDeadline = dueDate.isBefore(currentDate, 'day');
 
-    console.log(notLateDeadline)
-
     return (
         <Draggable draggableId={task.id} index={index}>
             {(provided) => (
@@ -33,10 +31,18 @@ const TaskItem = ({ task, index, onDelete }) => {
                         ref={provided.innerRef}
                         onClick={handleOpenModal}
                     >
-                        <div className={`${task.priority === "low" ? "card-low-priority" : task.priority === "high" ? "card-high-priority" : "card-critical-priority"}`}>{task.name}</div>
-                        <div className='detail-item'>{task.location}</div>
-                        <div className='detail-item'>{task.priority === "low" ? "Prioridade Baixa" : task.priority === "high" ? "Prioridade Alta" : "Prioridade Crítica"}</div>
-                        <div className={notLateDeadline ? 'deadline-date-late' : 'deadline-date'}>{`Finalizar até ${moment(task.dueDate).format('DD/MM/YYYY')}`}</div>
+                        <div className={`${task.priority === "low" ? "card-low-priority" : task.priority === "high" ? "card-high-priority" : "card-critical-priority"}`}>
+                            {task.name}
+                        </div>
+                        <div className='detail-item'>
+                            {task.location}
+                        </div>
+                        <div className='detail-item'>
+                            {task.priority === "low" ? "Prioridade Baixa" : task.priority === "high" ? "Prioridade Alta" : "Prioridade Crítica"}
+                        </div>
+                        <div className={notLateDeadline ? 'deadline-date-late' : 'deadline-date'}>
+                            {`Finalizar até ${moment(task.dueDate).format('DD/MM/YYYY')}`}
+                        </div>
                         <button className="delete-button" onClick={() => onDelete(task.id)}>
                             <div className='delete-icon'>
                                 <Icon name='x-mark' />
