@@ -17,8 +17,10 @@ const TaskItem = ({ task, index, onDelete }) => {
     };
 
     const currentDate = moment();
-    const dueDate = moment(task.dueDate, 'DD-MM-YYYY');
+    const dueDate = moment(task.dueDate, 'YYYY-MM-DD');
     const notLateDeadline = dueDate.isBefore(currentDate, 'day');
+    console.log(task.dueDate)
+    console.log(notLateDeadline)
 
     return (
         <Draggable draggableId={task.id} index={index}>
@@ -66,7 +68,7 @@ const TaskItem = ({ task, index, onDelete }) => {
                                             Finalizar até&nbsp;
                                         </span>
                                         <div>
-                                            {moment(task.dueDate).format('DD/MM/YYYY')}
+                                            {moment(task.dueDate).format('DD-MM-YYYY')}
                                         </div>
                                     </div>
                                     <div className='wrapper-detail'>

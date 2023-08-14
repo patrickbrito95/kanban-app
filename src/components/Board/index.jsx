@@ -59,15 +59,24 @@ const Board = () => {
 
         const currentDate = moment();
 
-        const dueDate = moment(newTaskDueDate._i, 'DD-MM-YYYY');
+        const dueDate = moment(newTaskDueDate, 'YYYY-MM-DD');
 
-        if (!newTaskName.trim() || !newDescription.trim() || dueDate.isBefore(currentDate, 'day')) {
+        console.log(dueDate)
+
+        if (!newTaskName.trim() || !newDescription.trim()) {
             setErrorMessages({
                 newTaskName: newTaskName.trim() ? '' : 'Campo obrigatório',
-                newDescription: newDescription.trim() ? '' : 'Campo obrigatório',
-                newTaskDueDate: 'Não é possível inserir data anterior a atual.'
+                newDescription: newDescription.trim() ? "" : "Campo Obrigatório",
             });
             return;
+        }
+
+
+        if (dueDate.isBefore(currentDate, 'day')) {
+            setErrorMessages({
+                newTaskDueDate: "Não é possível inserir data anterior a atual."
+            })
+            return
         }
 
         setData(newData);
@@ -79,7 +88,7 @@ const Board = () => {
         });
 
         setNewTaskName('');
-        setNewTaskDueDate('');
+        setNewTaskDueDate(moment().format('YYYY-MM-DD'));
         setNewTaskLocation('');
         setNewDescription('');
         setNewTaskPriority('low');
@@ -180,7 +189,7 @@ const Board = () => {
         setErrorMessages({
             newTaskName: '',
             newDescription: '',
-            newTaskDueDate: ''
+            newTaskDueDate: moment().format('YYYY-MM-DD')
         });
         setShowCreateTaskModal(false);
     };
