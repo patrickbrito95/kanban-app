@@ -72,11 +72,15 @@ const TaskItem = ({ task, index, onDelete }) => {
                                         </div>
                                     </div>
                                     <div className='wrapper-detail'>
-                                        <span>Local:</span>
-                                        <div>
+                                        {task.location && (
+                                            <>
+                                                <span>Local:</span>
+                                                <div>
 
-                                            {task.location}
-                                        </div>
+                                                    {task.location}
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                     <div className='wrapper-detail'>
                                         <span>Prioridade: </span>
