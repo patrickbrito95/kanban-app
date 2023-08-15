@@ -219,7 +219,7 @@ const Board = () => {
                     </div>
                     <div className='wrapper-search-filds'>
                         <Input
-                            label="Nome da Task"
+                            label="Pesquisar"
                             className="input-text"
                             type="text"
                             placeholder="Digite o nome da Task..."
